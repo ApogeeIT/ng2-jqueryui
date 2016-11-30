@@ -1,10 +1,10 @@
 # jQuery UI components for Angular 2
 
 ```typescript
-import { UiModule } from 'ng2-jqueryui/jqui';
+import { JquiModule } from 'ng2-jqueryui/jqui';
 
 @NgModule({
-    imports: [jquiModule]
+    imports: [JquiModule]
 })
 export class AppModule { }
 ```

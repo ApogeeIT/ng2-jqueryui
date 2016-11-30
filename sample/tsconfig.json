@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "target": "es5",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false,
+    "noImplicitAny": false,
+    "paths" : {
+      "ng2-jqueryui/*": ["../src/*"]
+    }
+  },
+  "include": [
+    "../typings/index.d.ts",
+    "../src/**/*.ts",
+    "./*.ts"
+  ]
+}

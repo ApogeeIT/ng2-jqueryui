@@ -1,0 +1,43 @@
+{
+  "name": "ng2-jqueryui",
+  "version": "0.0.1",
+  "description": "jQuery UI components for Angular 2",
+  "main": "jqui.js",
+  "scripts": {
+    "typings": "typings",
+    "postinstall": "typings install",
+    "bundles": "tsc -p src",
+    "start": "webpack-dev-server --content-base ./"
+  },
+  "keywords": [
+    "angular2",
+    "jqueryui"
+  ],
+  "repository": "https://github.com/ApogeeIT/ng2-jqueryui.git",
+  "author": "concat@apogee-it.fr",
+  "license": "MIT",
+  "peerDependencies": {
+    "jqueryui": "^1.11.1"
+  },
+  "devDependencies": {
+    "@angular/common": "~2.2.3",
+    "@angular/compiler": "~2.2.3",
+    "@angular/core": "~2.2.3",
+    "@angular/forms": "~2.2.3",
+    "@angular/platform-browser": "~2.2.3",
+    "@angular/platform-browser-dynamic": "~2.2.3",
+    "core-js": "^2.4.1",
+    "html-webpack-plugin": "^2.24.1",
+    "jquery": "^3.1.1",
+    "jqueryui": "^1.11.1",
+    "open-browser-webpack-plugin": "0.0.3",
+    "rxjs": "5.0.0-beta.12",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^1.2.2",
+    "typescript": "^2.0.3",
+    "typings": "^2.0.0",
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-server": "^2.1.0-beta.12",
+    "zone.js": "^0.6.21"
+  }
+}

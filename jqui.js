@@ -1,0 +1,1 @@
+exports.JquiModule = require('./bundles/jqui.module').JquiModule;

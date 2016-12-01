@@ -15,16 +15,39 @@ var core_1 = require('@angular/core');
 var forms_1 = require('@angular/forms');
 var JquiSliderComponent = (function () {
     function JquiSliderComponent(cd) {
+        this.uiMax = 100;
+        this.uiMin = 0;
+        this.uiOrientation = 'horizontal';
         this.onChange = function (_) { };
         cd.valueAccessor = this;
     }
+    JquiSliderComponent.prototype.setOption = function (optionName, value) {
+        this.$el.slider('option', optionName, value);
+    };
+    JquiSliderComponent.prototype.ngOnChanges = function (changes) {
+        if (this.$el) {
+            if (changes['uiDisabled']) {
+                this.setOption('disabled', changes['uiDisabled'].currentValue);
+            }
+            if (changes['uiMax']) {
+                if (!isNaN(changes['uiMax'].currentValue)) {
+                    this.setOption('max', +changes['uiMax'].currentValue);
+                }
+            }
+            if (changes['uiMin']) {
+                if (!isNaN(changes['uiMin'].currentValue)) {
+                    this.setOption('min', +changes['uiMin'].currentValue);
+                }
+            }
+        }
+    };
     JquiSliderComponent.prototype.writeValue = function (value) {
-        if ($(this.el.nativeElement).slider('instance')) {
+        if (this.$el) {
             if (value && !isNaN(value)) {
-                $(this.el.nativeElement).slider('option', 'value', +value);
+                this.setOption('value', +value);
             }
             else {
-                $(this.el.nativeElement).slider('option', 'value', 0);
+                this.setOption('value', 0);
             }
         }
     };
@@ -36,22 +59,17 @@ var JquiSliderComponent = (function () {
     };
     JquiSliderComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.max = this.max || 100;
-        this.min = this.min || 0;
-        this.disabled = this.disabled || false;
-        $(this.el.nativeElement).slider({
+        this.$el = $(this.el.nativeElement).slider({
             value: this.value || 0,
-            max: this.max,
-            min: this.min,
+            max: this.uiMax,
+            min: this.uiMin,
+            disabled: this.uiDisabled,
+            orientation: this.uiOrientation,
             slide: function (event, ui) {
                 _this.onChange(ui.value);
             }
         });
     };
-    __decorate([
-        core_1.ViewChild('slider'), 
-        __metadata('design:type', core_1.ElementRef)
-    ], JquiSliderComponent.prototype, "el", void 0);
     __decorate([
         core_1.Input('ngModel'), 
         __metadata('design:type', Number)
@@ -59,15 +77,23 @@ var JquiSliderComponent = (function () {
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Boolean)
-    ], JquiSliderComponent.prototype, "disabled", void 0);
+    ], JquiSliderComponent.prototype, "uiDisabled", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Number)
-    ], JquiSliderComponent.prototype, "max", void 0);
+    ], JquiSliderComponent.prototype, "uiMax", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Number)
-    ], JquiSliderComponent.prototype, "min", void 0);
+    ], JquiSliderComponent.prototype, "uiMin", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], JquiSliderComponent.prototype, "uiOrientation", void 0);
+    __decorate([
+        core_1.ViewChild('slider'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], JquiSliderComponent.prototype, "el", void 0);
     JquiSliderComponent = __decorate([
         core_1.Component({
             selector: 'jqui-slider[ngModel]',

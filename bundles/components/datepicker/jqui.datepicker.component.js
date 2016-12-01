@@ -15,9 +15,21 @@ var core_1 = require('@angular/core');
 var forms_1 = require('@angular/forms');
 var JquiDatePickerComponent = (function () {
     function JquiDatePickerComponent(cd) {
+        this.uiDateFormat = JquiDatePickerComponent.defaultDateFormat;
+        this.uiShowWeek = false;
         this.onChange = function (_) { };
         cd.valueAccessor = this;
     }
+    JquiDatePickerComponent.prototype.setOption = function (optionName, value) {
+        this.$el.datepicker('option', optionName, value);
+    };
+    JquiDatePickerComponent.prototype.ngOnChanges = function (changes) {
+        if (this.$el) {
+            if (changes['uiDisabled']) {
+                this.setOption('disabled', changes['uiDisabled'].currentValue);
+            }
+        }
+    };
     JquiDatePickerComponent.prototype.writeValue = function (value) {
         if (this.$el) {
             if (value) {
@@ -34,14 +46,13 @@ var JquiDatePickerComponent = (function () {
     JquiDatePickerComponent.prototype.registerOnTouched = function (fn) {
         //this.onTouched = fn;
     };
-    JquiDatePickerComponent.prototype.ngOnInit = function () {
-    };
     JquiDatePickerComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.disabled = this.disabled || false;
-        this.uiDateFormat = this.uiDateFormat || JquiDatePickerComponent.defaultDateFormat;
         this.$el = $(this.el.nativeElement).datepicker({
             dateFormat: this.uiDateFormat,
+            maxDate: this.uiMaxDate,
+            minDate: this.uiMinDate,
+            showWeek: this.uiShowWeek,
             onSelect: function (date) {
                 _this.onChange($.datepicker.parseDate(_this.uiDateFormat, date));
             }
@@ -59,12 +70,11 @@ var JquiDatePickerComponent = (function () {
                 _this.onChange(null);
             }
         });
+        if (this.uiDisabled) {
+            this.setOption('disabled', true);
+        }
     };
     JquiDatePickerComponent.defaultDateFormat = 'dd/mm/yy';
-    __decorate([
-        core_1.ViewChild('datepicker'), 
-        __metadata('design:type', core_1.ElementRef)
-    ], JquiDatePickerComponent.prototype, "el", void 0);
     __decorate([
         core_1.Input('ngModel'), 
         __metadata('design:type', Object)
@@ -72,11 +82,27 @@ var JquiDatePickerComponent = (function () {
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Boolean)
-    ], JquiDatePickerComponent.prototype, "disabled", void 0);
+    ], JquiDatePickerComponent.prototype, "uiDisabled", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)
     ], JquiDatePickerComponent.prototype, "uiDateFormat", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], JquiDatePickerComponent.prototype, "uiMaxDate", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], JquiDatePickerComponent.prototype, "uiMinDate", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], JquiDatePickerComponent.prototype, "uiShowWeek", void 0);
+    __decorate([
+        core_1.ViewChild('datepicker'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], JquiDatePickerComponent.prototype, "el", void 0);
     JquiDatePickerComponent = __decorate([
         core_1.Component({
             selector: 'jqui-datepicker[ngModel]',

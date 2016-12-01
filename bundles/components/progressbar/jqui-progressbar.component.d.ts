@@ -1,9 +1,12 @@
-import { OnInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
-export declare class JquiProgressBarComponent implements OnInit, OnChanges {
-    el: ElementRef;
+import { AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { IDisabledWidget, IMaxWidget } from '../../options/widget-options';
+export declare class JquiProgressBarComponent implements IDisabledWidget, IMaxWidget, AfterViewInit, OnChanges {
+    uiValue?: number;
+    uiDisabled: boolean;
+    uiMax: number;
+    private el;
+    private $el;
+    private setOption(optionName, value);
     ngOnChanges(changes: SimpleChanges): void;
-    value?: number;
-    disabled: boolean;
-    max: number;
-    ngOnInit(): void;
+    ngAfterViewInit(): void;
 }

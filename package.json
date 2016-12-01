@@ -7,7 +7,8 @@
     "typings": "typings",
     "postinstall": "typings install",
     "bundles": "tsc -p src",
-    "start": "webpack-dev-server --content-base ./"
+    "start": "webpack-dev-server --content-base ./",
+    "build":"webpack --config webpack.build.config.js -p"
   },
   "keywords": [
     "angular2",

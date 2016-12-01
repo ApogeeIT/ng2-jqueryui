@@ -1,13 +1,22 @@
-import { Component, Input, Self, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, Self, ViewChild, ElementRef, AfterViewInit, SimpleChanges, OnChanges } from '@angular/core';
 import { ControlValueAccessor, NgModel } from '@angular/forms';
+
+import { IDisabledWidget, IMaxWidget, IMinWidget, IOrientationWidget } from '../../options/widget-options';
 
 @Component({
     selector: 'jqui-slider[ngModel]',
     template: '<div #slider></div>'
 })
-export class JquiSliderComponent implements AfterViewInit, ControlValueAccessor {
+export class JquiSliderComponent implements IDisabledWidget, IMaxWidget, IMinWidget, IOrientationWidget, OnChanges, AfterViewInit, ControlValueAccessor {
 
-    @ViewChild('slider') el: ElementRef;
+    @Input('ngModel') value?: number;
+    @Input() uiDisabled: boolean;
+    @Input() uiMax: number = 100;
+    @Input() uiMin: number = 0;
+    @Input() uiOrientation: 'vertical' | 'horizontal' = 'horizontal';
+
+    @ViewChild('slider') private el: ElementRef;
+    private $el:JQuery;
 
     public onChange:any = (_: any) => {};
 
@@ -15,12 +24,37 @@ export class JquiSliderComponent implements AfterViewInit, ControlValueAccessor 
         cd.valueAccessor = this;
     }
 
+    private setOption(optionName: string, value:any):void {
+        this.$el.slider('option', optionName, value);
+    }
+
+    public ngOnChanges(changes: SimpleChanges): void {
+        if (this.$el) {
+
+            if (changes['uiDisabled']) {
+                this.setOption('disabled', changes['uiDisabled'].currentValue);
+            }
+
+            if (changes['uiMax']) {
+                if (!isNaN(changes['uiMax'].currentValue)) {
+                    this.setOption('max', +changes['uiMax'].currentValue);
+                }
+            }
+
+            if (changes['uiMin']) {
+                if (!isNaN(changes['uiMin'].currentValue)) {
+                    this.setOption('min', +changes['uiMin'].currentValue);
+                }
+            }
+        }
+    }
+
     public writeValue(value:any):void {
-        if($(this.el.nativeElement).slider('instance')) {
+        if(this.$el) {
             if(value && !isNaN(value)) {
-                $(this.el.nativeElement).slider('option', 'value', +value);
+                this.setOption('value', +value);
             } else {
-                $(this.el.nativeElement).slider('option', 'value', 0);
+                this.setOption('value', 0);
             }   
         }
     }
@@ -33,22 +67,14 @@ export class JquiSliderComponent implements AfterViewInit, ControlValueAccessor 
        //this.onTouched = fn;
     }
 
-    @Input('ngModel') value?: number;
-    @Input() disabled: boolean;
-    @Input() max: number;
-    @Input() min: number;
-
-
-
     ngAfterViewInit() {
-        this.max = this.max || 100;
-        this.min = this.min || 0;
-        this.disabled = this.disabled || false;
 
-        $(this.el.nativeElement).slider({
+        this.$el = $(this.el.nativeElement).slider({
            value: this.value || 0,
-            max: this.max,
-            min: this.min,
+            max: this.uiMax,
+            min: this.uiMin,
+            disabled : this.uiDisabled,
+            orientation: this.uiOrientation,
             slide: (event,  ui) => {
                 this.onChange(ui.value);
             }

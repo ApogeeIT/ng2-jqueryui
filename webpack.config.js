@@ -13,7 +13,7 @@ var config = {
     output: {
         path: path.join(__dirname, './build'),
         publicPath: '/build/',
-        filename: '[name].js'
+        filename: '[name]-[chunkhash].js'
     },
     resolve: {
         extensions: ['.ts', '.js']
@@ -23,6 +23,7 @@ var config = {
     },
     plugins: [
         new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.UglifyJsPlugin(),
         new webpack.NoErrorsPlugin(),
         new HtmlWebpackPlugin({ template: "sample/index.html" }),
         new OpenBrowserPlugin({ url: 'http://localhost:8080/build/index.html' })

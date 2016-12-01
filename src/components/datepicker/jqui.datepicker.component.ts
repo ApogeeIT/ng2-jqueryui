@@ -1,11 +1,17 @@
-import { Component, Input, Self, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, Self, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NgModel } from '@angular/forms';
+
+import { IDisabledWidget } from '../../options/widget-options';
 
 @Component({
     selector: 'jqui-datepicker[ngModel]',
     template: '<input type="text" #datepicker />'
 })
-export class JquiDatePickerComponent implements AfterViewInit, ControlValueAccessor, OnInit {
+export class JquiDatePickerComponent implements IDisabledWidget, OnChanges, AfterViewInit, ControlValueAccessor {
+
+    @Input('ngModel') value?: any;
+    @Input() uiDisabled: boolean;
+    @Input() uiDateFormat: string = JquiDatePickerComponent.defaultDateFormat;
 
     private static defaultDateFormat = 'dd/mm/yy'; 
 
@@ -16,6 +22,19 @@ export class JquiDatePickerComponent implements AfterViewInit, ControlValueAcces
 
     public constructor(@Self() cd:NgModel) {
         cd.valueAccessor = this;
+    }
+
+    private setOption(optionName: string, value:any):void {
+        this.$el.datepicker('option', optionName, value);
+    }
+
+    public ngOnChanges(changes: SimpleChanges): void {
+        if (this.$el) {
+
+            if (changes['uiDisabled']) {
+                this.setOption('disabled', changes['uiDisabled'].currentValue);
+            }
+        }
     }
 
     public writeValue(value:any):void {
@@ -36,18 +55,7 @@ export class JquiDatePickerComponent implements AfterViewInit, ControlValueAcces
        //this.onTouched = fn;
     }
 
-    @Input('ngModel') value?: any;
-    @Input() disabled: boolean;
-    @Input() uiDateFormat: string;
-
-    ngOnInit(){
-        
-    }
-
     ngAfterViewInit() {
-
-        this.disabled = this.disabled || false;
-        this.uiDateFormat = this.uiDateFormat || JquiDatePickerComponent.defaultDateFormat;
 
         this.$el = $(this.el.nativeElement).datepicker({
             dateFormat: this.uiDateFormat,
@@ -68,5 +76,9 @@ export class JquiDatePickerComponent implements AfterViewInit, ControlValueAcces
                 this.onChange(null);
             }
         });
+
+        if(this.uiDisabled) {
+            this.setOption('disabled', true);
+        }
     }
 }

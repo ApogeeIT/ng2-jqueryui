@@ -16,5 +16,5 @@ export class AppModule { }
 
 <jqui-slider name="myValue" [(ngModel)]="myValue" [uiMin]="0" [uiMax]="100" [uiDisabled]="false" [uiOrientation]="'horizontal'"></jqui-slider>
 
-<jqui-datepicker [(ngModel)]="myDate" [uiDateFormat]="'dd/mm/yy'"></jqui-datepicker> 
+<jqui-datepicker [(ngModel)]="myDate" [uiDateFormat]="'dd/mm/yy'" [uiMinDate]="-40" [uiMaxDate]="40"></jqui-datepicker> 
 ```

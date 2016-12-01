@@ -16,15 +16,15 @@ export class JquiSliderComponent implements IDisabledWidget, IMaxWidget, IMinWid
     @Input() uiOrientation: 'vertical' | 'horizontal' = 'horizontal';
 
     @ViewChild('slider') private el: ElementRef;
-    private $el:JQuery;
+    private $el: JQuery;
 
-    public onChange:any = (_: any) => {};
+    public onChange: any = (_: any) => { };
 
-    public constructor(@Self() cd:NgModel) {
+    public constructor( @Self() cd: NgModel) {
         cd.valueAccessor = this;
     }
 
-    private setOption(optionName: string, value:any):void {
+    private setOption(optionName: string, value: any): void {
         this.$el.slider('option', optionName, value);
     }
 
@@ -49,33 +49,33 @@ export class JquiSliderComponent implements IDisabledWidget, IMaxWidget, IMinWid
         }
     }
 
-    public writeValue(value:any):void {
-        if(this.$el) {
-            if(value && !isNaN(value)) {
+    public writeValue(value: any): void {
+        if (this.$el) {
+            if (value && !isNaN(value)) {
                 this.setOption('value', +value);
             } else {
                 this.setOption('value', 0);
-            }   
+            }
         }
     }
 
-    public registerOnChange(fn:(_:any) => {}):void {
+    public registerOnChange(fn: (_: any) => {}): void {
         this.onChange = fn;
     }
 
-    public registerOnTouched(fn:() => {}):void {
-       //this.onTouched = fn;
+    public registerOnTouched(fn: () => {}): void {
+        //this.onTouched = fn;
     }
 
     ngAfterViewInit() {
 
         this.$el = $(this.el.nativeElement).slider({
-           value: this.value || 0,
+            value: this.value || 0,
             max: this.uiMax,
             min: this.uiMin,
-            disabled : this.uiDisabled,
+            disabled: this.uiDisabled,
             orientation: this.uiOrientation,
-            slide: (event,  ui) => {
+            slide: (event, ui) => {
                 this.onChange(ui.value);
             }
         });

@@ -13,18 +13,22 @@ export class JquiDatePickerComponent implements IDisabledWidget, OnChanges, Afte
     @Input() uiDisabled: boolean;
     @Input() uiDateFormat: string = JquiDatePickerComponent.defaultDateFormat;
 
-    private static defaultDateFormat = 'dd/mm/yy'; 
+    @Input() uiMaxDate: Date | number | string;
+    @Input() uiMinDate: Date | number | string;
+    @Input() uiShowWeek: boolean = false;
+
+    private static defaultDateFormat = 'dd/mm/yy';
 
     @ViewChild('datepicker') private el: ElementRef;
-    private $el:JQuery;
+    private $el: JQuery;
 
-    public onChange:any = (_: any) => {};
+    public onChange: any = (_: any) => { };
 
-    public constructor(@Self() cd:NgModel) {
+    public constructor( @Self() cd: NgModel) {
         cd.valueAccessor = this;
     }
 
-    private setOption(optionName: string, value:any):void {
+    private setOption(optionName: string, value: any): void {
         this.$el.datepicker('option', optionName, value);
     }
 
@@ -37,39 +41,42 @@ export class JquiDatePickerComponent implements IDisabledWidget, OnChanges, Afte
         }
     }
 
-    public writeValue(value:any):void {
-        if(this.$el) {
-            if(value) {
+    public writeValue(value: any): void {
+        if (this.$el) {
+            if (value) {
                 this.$el.datepicker('setDate', value);
             } else {
                 this.$el.datepicker('setDate', null);
-            }            
+            }
         }
     }
 
-    public registerOnChange(fn:(_:any) => {}):void {
+    public registerOnChange(fn: (_: any) => {}): void {
         this.onChange = fn;
     }
 
-    public registerOnTouched(fn:() => {}):void {
-       //this.onTouched = fn;
+    public registerOnTouched(fn: () => {}): void {
+        //this.onTouched = fn;
     }
 
     ngAfterViewInit() {
 
         this.$el = $(this.el.nativeElement).datepicker({
             dateFormat: this.uiDateFormat,
-            onSelect : (date:string) => {
+            maxDate: this.uiMaxDate,
+            minDate: this.uiMinDate,
+            showWeek: this.uiShowWeek,
+            onSelect: (date: string) => {
                 this.onChange($.datepicker.parseDate(this.uiDateFormat, date));
             }
-            
+
         }).on('change', () => {
-            let date:Date = null;
-            try{
+            let date: Date = null;
+            try {
                 date = $.datepicker.parseDate(this.uiDateFormat, this.el.nativeElement.value)
             } catch (e) { }
-            
-            if(date) {
+
+            if (date) {
                 this.onChange(date);
             } else {
                 this.el.nativeElement.value = '';
@@ -77,7 +84,7 @@ export class JquiDatePickerComponent implements IDisabledWidget, OnChanges, Afte
             }
         });
 
-        if(this.uiDisabled) {
+        if (this.uiDisabled) {
             this.setOption('disabled', true);
         }
     }

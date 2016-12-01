@@ -14,17 +14,16 @@ export class JquiProgressBarComponent implements IDisabledWidget, IMaxWidget, Af
     @Input() uiMax: number;
 
     @ViewChild('progressbar') private el: ElementRef;
-    private $el:JQuery;
+    private $el: JQuery;
 
-    private setOption(optionName: string, value:any):void {
+    private setOption(optionName: string, value: any): void {
         this.$el.progressbar('option', optionName, value);
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
         if (this.$el) {
 
-            if(changes['uiValue'])
-            {
+            if (changes['uiValue']) {
                 if (!isNaN(changes['uiValue'].currentValue)) {
                     this.setOption('value', +changes['uiValue'].currentValue);
                 } else {
@@ -53,8 +52,8 @@ export class JquiProgressBarComponent implements IDisabledWidget, IMaxWidget, Af
             max: this.uiMax
             // disabled: true
         })
-        
-        if(this.uiDisabled) {
+
+        if (this.uiDisabled) {
             this.setOption('disabled', true);
         }
     }

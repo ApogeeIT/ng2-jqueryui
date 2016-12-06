@@ -28,6 +28,14 @@ var JquiDatePickerComponent = (function () {
             if (changes['uiDisabled']) {
                 this.setOption('disabled', changes['uiDisabled'].currentValue);
             }
+            if (changes['uiMinDate']) {
+                console.log(changes['uiMinDate'].currentValue);
+                this.setOption('minDate', changes['uiMinDate'].currentValue);
+            }
+            if (changes['uiMaxDate']) {
+                console.log(changes['uiMaxDate'].currentValue);
+                this.setOption('maxDate', changes['uiMaxDate'].currentValue);
+            }
         }
     };
     JquiDatePickerComponent.prototype.writeValue = function (value) {

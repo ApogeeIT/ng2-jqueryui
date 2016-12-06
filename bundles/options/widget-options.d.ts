@@ -10,3 +10,6 @@ export interface IMinWidget {
 export interface IOrientationWidget {
     uiOrientation: 'vertical' | 'horizontal';
 }
+export interface ICollapsibleWidget {
+    uiCollapsible: boolean;
+}

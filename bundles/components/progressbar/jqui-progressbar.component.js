@@ -10,7 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var JquiProgressBarComponent = (function () {
-    function JquiProgressBarComponent() {
+    function JquiProgressBarComponent(el) {
+        this.el = el;
     }
     JquiProgressBarComponent.prototype.setOption = function (optionName, value) {
         this.$el.progressbar('option', optionName, value);
@@ -57,16 +58,13 @@ var JquiProgressBarComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', Number)
     ], JquiProgressBarComponent.prototype, "uiMax", void 0);
-    __decorate([
-        core_1.ViewChild('progressbar'), 
-        __metadata('design:type', core_1.ElementRef)
-    ], JquiProgressBarComponent.prototype, "el", void 0);
     JquiProgressBarComponent = __decorate([
         core_1.Component({
-            selector: 'jqui-progressbar[uiValue]',
-            template: '<div #progressbar></div>'
+            selector: 'div[jqui-progressbar][uiValue],jqui-progressbar[uiValue]',
+            template: '<ng-content></ng-content>',
+            styles: [':host{display:block}']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [core_1.ElementRef])
     ], JquiProgressBarComponent);
     return JquiProgressBarComponent;
 }());

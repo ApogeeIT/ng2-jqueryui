@@ -1,20 +1,22 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, AfterViewInit, ViewChild, ElementRef, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { IDisabledWidget, IMaxWidget } from '../../options/widget-options';
-
+import * as WidgetOptions from '../../options/widget-options';
 
 @Component({
-    selector: 'jqui-progressbar[uiValue]',
-    template: '<div #progressbar></div>'
+    selector: 'div[jqui-progressbar][uiValue],jqui-progressbar[uiValue]',
+    template: '<ng-content></ng-content>',
+    styles:[':host{display:block}']
 })
-export class JquiProgressBarComponent implements IDisabledWidget, IMaxWidget, AfterViewInit, OnChanges {
+export class JquiProgressBarComponent implements WidgetOptions.IDisabledWidget, WidgetOptions.IMaxWidget, AfterViewInit, OnChanges {
 
     @Input() uiValue?: number;
     @Input() uiDisabled: boolean;
     @Input() uiMax: number;
 
-    @ViewChild('progressbar') private el: ElementRef;
     private $el: JQuery;
+
+    constructor(private el: ElementRef) {
+    }
 
     private setOption(optionName: string, value: any): void {
         this.$el.progressbar('option', optionName, value);

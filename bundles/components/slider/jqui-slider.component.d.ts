@@ -1,7 +1,7 @@
 import { AfterViewInit, SimpleChanges, OnChanges } from '@angular/core';
 import { ControlValueAccessor, NgModel } from '@angular/forms';
-import { IDisabledWidget, IMaxWidget, IMinWidget, IOrientationWidget } from '../../options/widget-options';
-export declare class JquiSliderComponent implements IDisabledWidget, IMaxWidget, IMinWidget, IOrientationWidget, OnChanges, AfterViewInit, ControlValueAccessor {
+import * as WidgetOptions from '../../options/widget-options';
+export declare class JquiSliderComponent implements WidgetOptions.IDisabledWidget, WidgetOptions.IMaxWidget, WidgetOptions.IMinWidget, WidgetOptions.IOrientationWidget, OnChanges, AfterViewInit, ControlValueAccessor {
     value?: number;
     uiDisabled: boolean;
     uiMax: number;
